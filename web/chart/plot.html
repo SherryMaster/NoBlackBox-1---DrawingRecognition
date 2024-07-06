@@ -41,8 +41,8 @@
 
             tr.insertCell().innerHTML = sample.id;
             tr.insertCell().innerHTML = sample.label;
-            tr.insertCell().innerHTML = sample.point[0];
-            tr.insertCell().innerHTML = sample.point[1];
+            tr.insertCell().innerHTML = math.formatNumber(sample.point[0]);
+            tr.insertCell().innerHTML = math.formatNumber(sample.point[1]);
         }
     </script>
 </body>
