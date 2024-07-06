@@ -2,8 +2,6 @@ node/node_modules
 node/package-lock.json
 node/package.json
 
-js_objects/samples.js
+common/js_objects/*.js
 
-data/dataset/img/*
-data/dataset/json/*
-data/dataset/samples.json
+data/dataset/*

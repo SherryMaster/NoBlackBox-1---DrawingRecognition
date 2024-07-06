@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=0.9, user-scalable=0">
+    <title>Data Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Data Viewer</h1>
+    <div id="chartContainer"></div>
+    <div id="container"></div>
+    
+    <script src="../common/js_objects/features.js"></script>
+    <script src="../common/constants.js"></script>
+    <script src="../common/utils.js"></script>
+    <script src="js/display.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script>
+        const {samples, featureNames} = features
+        const groups = utils.groupBy(samples, "student_id")
+        
+        for(let student_id in groups){
+            const samples = groups[student_id];
+            const studentName = samples[0].student_name;
+            createRow(container, studentName, samples);
+        }
+
+        const options = {
+            width:400,
+            height:400,
+            hAxis: { title: featureNames[0] },
+            vAxis: { title: featureNames[1] },
+            legend: { position: 'none' },
+        };
+
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            const data = new google.visualization.DataTable();
+            data.addColumn('number', featureNames[0]);
+            data.addColumn('number', featureNames[1]);
+            data.addRows(samples.map(sample => sample.point));
+            const chart = new google.visualization.ScatterChart(chartContainer);
+            chart.draw(data, options);
+        }
+
+    </script>
+</body>
+</html>
