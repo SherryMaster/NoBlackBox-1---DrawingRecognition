@@ -19,8 +19,9 @@
 
         for(let i=1; i<=N; i++){
             type = Math.random() < 0.5 ? "sport" : "classic"
-            km = math.lerp(5000, 50000, Math.random())
-            price = math.lerp(1000, 100000, Math.random())
+            km = math.Lerp(500, 500000, Math.random())
+            t = math.invLerp(500, 500000, km)
+            price = math.Lerp(100000, 100, t)
             samples.push({
                 id: i,
                 label: type,
