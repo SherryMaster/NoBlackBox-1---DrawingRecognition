@@ -31,6 +31,21 @@
             })
         }
 
+        const options = {
+            size:250,
+            axisLabels:["Kilometres", "Price"],
+            styles:{
+                classic:'gray',
+                sport:'blue'
+            }
+        }
+
+        const chart = new Chart(
+            chartContainer,
+            samples,
+            options
+        )
+
         const header = dataTable.createTHead();
         const tr = header.insertRow();
         tr.insertCell().innerHTML = "ID";
