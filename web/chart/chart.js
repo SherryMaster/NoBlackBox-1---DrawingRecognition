@@ -13,6 +13,7 @@ class Chart{
         container.appendChild(this.canvas)
 
         this.ctx = this.canvas.getContext("2d")
+        this.margin = options.size * 0.1
         this.transparency = 0.5
 
         this.pixelBounds = this.#getPixelBounds()
@@ -35,8 +36,8 @@ class Chart{
 
     #getDataBounds(){
         const {samples} = this
-        const x = samples.map(sample=>sample.point[0])
-        const y = samples.map(sample=>sample.point[1])
+        const x = samples.map(samples=>samples.point[0])
+        const y = samples.map(samples=>samples.point[1])
 
         const minX = Math.min(...x)
         const maxX = Math.max(...x)
@@ -67,14 +68,8 @@ class Chart{
 
         for (const sample of samples){
             const {point, label} = sample
-            const x = point[0]
-            const y = point[1]
 
-            const pixelLoc = [
-                math.remap(dataBounds.left, dataBounds.right, pixelBounds.left, pixelBounds.right, x),
-                math.remap(dataBounds.top, dataBounds.bottom, pixelBounds.top, pixelBounds.bottom, y)
-            ]
-
+            const pixelLoc = math.remapPoint(dataBounds, pixelBounds, point)
             graphics.drawPoint(ctx, pixelLoc)
 
         }
