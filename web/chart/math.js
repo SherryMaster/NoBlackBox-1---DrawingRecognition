@@ -1,11 +1,15 @@
 const math = {}
 
-math.Lerp = (a, b, t) => {
+math.lerp = (a, b, t) => {
     return a + (b - a) * t
 }
 
 math.invLerp = (a, b, v) => {
     return (v - a) / (b - a)
+}
+
+math.remap = (oldA, oldB, newA, newB, v) => {
+    return math.lerp(newA, newB, math.invLerp(oldA, oldB, v))
 }
 
 math.formatNumber = (n, dec=0) => {
