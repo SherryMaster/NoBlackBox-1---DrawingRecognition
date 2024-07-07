@@ -8,10 +8,13 @@
 </head>
 <body>
     <h1>Custom chart</h1>
-    <div id="chartContainer"></div>
-    <table id="dataTable"></table>
+    <div class="chartAndTable">
+        <div id="chartContainer"></div>
+        <table id="dataTable"></table>
+    </div>
 
     <script src="math.js"></script>
+    <script src="chart.js"></script>
 
     <script>
         N = 1000
@@ -32,7 +35,7 @@
         }
 
         const options = {
-            size:250,
+            size:500,
             axisLabels:["Kilometres", "Price"],
             styles:{
                 classic:'gray',

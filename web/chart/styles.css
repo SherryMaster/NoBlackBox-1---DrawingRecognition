@@ -6,8 +6,10 @@ body{
 
 
 table {
+    position: absolute;
     border-collapse: collapse;
-    width: 100%;
+    width: 50%;
+    right:0%;
     margin-top: 20px;
     animation: fadeIn 0.5s;
     transition: all 0.5s ease-in-out;
@@ -45,4 +47,11 @@ tbody > tr:hover {
 @keyframes fadeIn {
     0% {opacity: 0;}
     100% {opacity: 1;}
+}
+
+#chartContainer {
+    position: fixed;
+    top: 50%;
+    left: 0%;
+    transform: translate(0,-50%);
 }
