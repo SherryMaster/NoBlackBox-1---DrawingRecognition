@@ -58,9 +58,103 @@ class Chart{
         const {ctx, canvas} = this;
 
         ctx.clearRect(0,0,canvas.width,canvas.height)
+        this.#drawAxes()
         ctx.globalAlpha = this.transparency
         this.#drawPoints()
         ctx.globalAlpha = 1
+    }
+
+    #drawAxes(){
+        const {ctx, canvas, axisLabels, margin} = this
+        const {left, right, top, bottom} = this.pixelBounds
+
+        graphics.drawText(
+            ctx,
+            {
+                text: axisLabels[0],
+                loc: [canvas.width/2, bottom+margin/2],
+                size: margin*0.5
+            }
+        )
+
+        ctx.save()
+        ctx.translate(left - margin/2, canvas.height/2)
+
+        ctx.rotate(-Math.PI/2)
+        graphics.drawText(
+            ctx,
+            {
+                text: axisLabels[1],
+                loc: [0, 0],
+                size: margin*0.5
+            }
+        )
+        ctx.restore()
+
+        ctx.beginPath()
+        ctx.moveTo(left, top)
+        ctx.lineTo(left, bottom)
+        ctx.lineTo(right, bottom)
+        ctx.setLineDash([6, 4])
+        ctx.strokeStyle = "lightgray"
+        ctx.lineWidth = 2
+        ctx.stroke()
+
+        ctx.setLineDash([])
+
+        const dataMin = math.remapPoint(this.pixelBounds, this.dataBounds, [left, bottom])
+        graphics.drawText(
+            ctx,
+            {
+                text: math.formatNumber(dataMin[0]),
+                loc: [left, bottom+margin/10],
+                size: margin*0.3,
+                align: "left",
+                baseline: "top"
+            }
+        )
+
+        ctx.save()
+        ctx.translate(left, bottom-margin/10)
+        ctx.rotate(-Math.PI/2)
+        graphics.drawText(
+            ctx,
+            {
+                text: math.formatNumber(dataMin[1]),
+                loc: [0, 0],
+                size: margin*0.3,
+                align: "left",
+                baseline: "bottom"
+            }
+        )
+        ctx.restore()
+
+        const dataMax = math.remapPoint(this.pixelBounds, this.dataBounds, [right, top])
+        graphics.drawText(
+            ctx,
+            {
+                text: math.formatNumber(dataMax[0]),
+                loc: [right, bottom+margin/10],
+                size: margin*0.3,
+                align: "right",
+                baseline: "top"
+            }
+        )
+
+        ctx.save()
+        ctx.translate(left, top)
+        ctx.rotate(-Math.PI/2)
+        graphics.drawText(
+            ctx,
+            {
+                text: math.formatNumber(dataMax[1]),
+                loc: [0, 0],
+                size: margin*0.3,
+                align: "right",
+                baseline: "bottom"
+            }
+        )
+        ctx.restore()
     }
 
     #drawPoints(){
