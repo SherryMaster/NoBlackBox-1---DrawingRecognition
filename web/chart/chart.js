@@ -16,10 +16,99 @@ class Chart{
         this.margin = options.size * 0.1
         this.transparency = 0.5
 
+        this.dataTrans = {
+            offset: [0, 0],
+            scale: 1
+        }
+
+        this.dragInfo = {
+            dragging: false,
+            dragStart: [0, 0],
+            dragEnd: [0, 0],
+            dragOffset: [0, 0]
+        }
+
         this.pixelBounds = this.#getPixelBounds()
         this.dataBounds = this.#getDataBounds()
+        this.defaultDataBounds = this.dataBounds
 
         this.#draw()
+
+        this.#addEventListeners()
+    }
+
+    #addEventListeners(){
+        const {canvas, dataTrans, dragInfo} = this
+        canvas.onmousedown = (evt)=>{
+            const dataLoc = this.#getMouse(evt, true);
+            dragInfo.dragStart = dataLoc
+            dragInfo.dragging = true
+        }
+
+        canvas.onmousemove = (evt)=>{
+            if(dragInfo.dragging){
+                const dataLoc = this.#getMouse(evt, true);
+                dragInfo.dragEnd = dataLoc
+                dragInfo.dragOffset = math.subtract(dragInfo.dragStart, dragInfo.dragEnd)
+
+                const newOffset = math.add(dataTrans.offset, dragInfo.dragOffset)
+
+                this.#updateDataBounds(newOffset, dataTrans.scale)
+                this.#draw()
+            }
+        }
+
+        canvas.onmouseup = ()=>{
+            dataTrans.offset = math.add(dataTrans.offset, dragInfo.dragOffset)
+            dragInfo.dragging = false
+        }
+
+        canvas.onwheel = (evt)=>{
+            const dir = Math.sign(evt.deltaY)
+            const step = 0.02
+            dataTrans.scale += evt.deltaY * step
+            dataTrans.scale = Math.max(step, Math.min(2, dataTrans.scale))
+
+            console.log(dataTrans.scale)
+            
+            this.#updateDataBounds(dataTrans.offset, dataTrans.scale)
+
+            this.#draw()
+            evt.preventDefault()
+        }
+    }
+
+    #updateDataBounds(newOffset, scale){
+        const {dataBounds, defaultDataBounds: def} = this
+        dataBounds.left = def.left + newOffset[0]
+        dataBounds.right = def.right + newOffset[0]
+        dataBounds.top = def.top + newOffset[1]
+        dataBounds.bottom = def.bottom + newOffset[1]
+        
+        const centre = [
+            (dataBounds.left + dataBounds.right) / 2,
+            (dataBounds.top + dataBounds.bottom) / 2
+        ]
+
+        dataBounds.left = math.lerp(centre[0], dataBounds.left, scale)
+        dataBounds.right = math.lerp(centre[0], dataBounds.right, scale)
+        dataBounds.top = math.lerp(centre[1], dataBounds.top, scale)
+        dataBounds.bottom = math.lerp(centre[1], dataBounds.bottom, scale)
+
+    }
+
+    #getMouse(evt, data=false){
+        const {canvas} = this
+        const rect = canvas.getBoundingClientRect();
+        const pixelLoc = [
+            evt.clientX-rect.left,
+            evt.clientY-rect.top
+        ]
+        if(data){
+            const dataLoc = math.remapPoint(this.pixelBounds, this.defaultDataBounds, pixelLoc)
+            return dataLoc
+        }
+        return pixelLoc
     }
 
     #getPixelBounds(){

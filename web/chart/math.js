@@ -19,6 +19,14 @@ math.remapPoint = (oldBounds, newBounds, point) => {
     ]
 }
 
+math.subtract = (a, b) => {
+    return [a[0] - b[0], a[1] - b[1]]
+}
+
+math.add = (a, b) => {
+    return [a[0] + b[0], a[1] + b[1]]
+}
+
 math.formatNumber = (n, dec=0) => {
     return n.toFixed(dec)
 }
