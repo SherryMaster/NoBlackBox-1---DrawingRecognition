@@ -1,29 +1,41 @@
-function createRow(container, studentName, samples){
-    const row = document.createElement("div")
-    row.classList.add("row")
-    container.appendChild(row)
+function createRow(container, studentName, samples) {
+    const row = document.createElement("div");
+    row.classList.add("row");
+    container.appendChild(row);
 
-    const row_label = document.createElement("div")
-    row_label.innerHTML = studentName
-    row_label.classList.add("rowLabel")
-    row.appendChild(row_label)
+    const rowLabel = document.createElement("div");
+    rowLabel.innerHTML = studentName;
+    rowLabel.classList.add("rowLabel");
+    row.appendChild(rowLabel);
 
-    for(let sample of samples){
-        const {id, label} = sample
+    const drawingsGrid = document.createElement("div");
+    drawingsGrid.classList.add("drawings-grid");
+    row.appendChild(drawingsGrid);
 
-        const sampleContainer = document.createElement("div")
-        sampleContainer.classList.add("sampleContainer")
-        sampleContainer.id = "sample_"+id
+    for(let sample of samples) {
+        const {id, label} = sample;
 
-        sampleLabel = document.createElement("div")
-        sampleLabel.innerHTML = label
-        sampleLabel.classList.add("sampleLabel")
-        sampleContainer.appendChild(sampleLabel)
+        const sampleContainer = document.createElement("div");
+        sampleContainer.classList.add("sampleContainer");
+        sampleContainer.id = "sample_" + id;
 
-        const img = document.createElement("img")
-        img.src = constants.IMG_DIR+"/"+id+".png"
-        img.classList.add("thumb")
-        sampleContainer.appendChild(img)
-        row.appendChild(sampleContainer)
+        const sampleLabel = document.createElement("div");
+        sampleLabel.innerHTML = label;
+        sampleLabel.classList.add("sampleLabel");
+        sampleContainer.appendChild(sampleLabel);
+
+        const img = document.createElement("img");
+        img.src = constants.IMG_DIR + "/" + id + ".png";
+        img.classList.add("thumb");
+        sampleContainer.appendChild(img);
+        
+        drawingsGrid.appendChild(sampleContainer);
+    }
+
+    if(samples.length === 8) {
+        const completionIndicator = document.createElement("div");
+        completionIndicator.classList.add("completion-indicator");
+        completionIndicator.innerHTML = "Complete";
+        row.appendChild(completionIndicator);
     }
 }

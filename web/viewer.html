@@ -2,14 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, maximum-scale=0.9, user-scalable=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Viewer</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- Force reload of CSS by adding a version parameter -->
+    <link rel="stylesheet" href="styles.css?v=2">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Data Viewer</h1>
-    <div id="chartContainer"></div>
-    <div id="container"></div>
+    <h1>Drawing Recognition Data Viewer</h1>
+    
+    <div class="main-container">
+        <div id="chartContainer"></div>
+        <div id="container"></div>
+    </div>
     
     <script src="../common/js_objects/features.js"></script>
     <script src="../common/constants.js"></script>
@@ -18,34 +23,50 @@
     <script src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script>
-        const {samples, featureNames} = features
-        const groups = utils.groupBy(samples, "student_id")
+        const {samples, featureNames} = features;
+        const groups = utils.groupBy(samples, "student_id");
         
-        for(let student_id in groups){
+        for(let student_id in groups) {
             const samples = groups[student_id];
             const studentName = samples[0].student_name;
             createRow(container, studentName, samples);
         }
 
         const options = {
-            width:400,
-            height:400,
-            hAxis: { title: featureNames[0] },
-            vAxis: { title: featureNames[1] },
+            width: 400,
+            height: 400,
+            hAxis: { 
+                title: featureNames[0],
+                titleTextStyle: { color: '#2c3e50', fontSize: 14 }
+            },
+            vAxis: { 
+                title: featureNames[1],
+                titleTextStyle: { color: '#2c3e50', fontSize: 14 }
+            },
             legend: { position: 'none' },
+            chartArea: { width: '80%', height: '80%' },
+            backgroundColor: { fill: 'transparent' },
+            colors: ['#3498db'],
+            pointSize: 5,
+            animation: {
+                startup: true,
+                duration: 1000,
+                easing: 'out'
+            }
         };
 
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
+        
         function drawChart() {
             const data = new google.visualization.DataTable();
             data.addColumn('number', featureNames[0]);
             data.addColumn('number', featureNames[1]);
             data.addRows(samples.map(sample => sample.point));
+            
             const chart = new google.visualization.ScatterChart(chartContainer);
             chart.draw(data, options);
         }
-
     </script>
 </body>
 </html>

@@ -1,61 +1,199 @@
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: skyblue;
-    overscroll-behavior: none;
+/* Modern CSS Reset and Base Styles */
+:root {
+    --primary: #2563eb;
+    --secondary: #64748b;
+    --background: #f1f5f9;
+    --surface: #ffffff;
+    --text: #1e293b;
+    --success: #10b981;
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-#content{
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 1rem;
+}
+
+/* Typography */
+h1 {
+    color: var(--text);
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+h1::after {
+    content: '';
     position: absolute;
-    top: 50%;
+    bottom: -1rem;
     left: 50%;
-    transform: translate(-50%,-50%);
-    text-align: center;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: var(--primary);
+    border-radius: 2px;
 }
 
-button{
-    cursor: pointer;
-    border:none;
-    padding:2px 10px 2px 10px;
-    height: 22px;
-    border-radius: 5px;
-    background-color: navy;
-    color: white;
+/* Layout */
+.main-container {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 1rem;
+    max-width: 1800px;
+    margin: 0 auto;
 }
 
-button:hover{
-    background-color: mediumblue;
+#chartContainer {
+    background: var(--surface);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-sm);
+    padding: 1rem;
+    position: sticky;
+    top: 1rem;
+    height: fit-content;
 }
 
-button:disabled,
-button:disabled:hover{
-    background-color: gray;
-    cursor: not-allowed;
+#container {
+    background: transparent;
+    overflow-y: auto;
 }
-.row{
+
+/* Compact Row Styling */
+.row {
     display: flex;
+    align-items: center;
+    background: var(--surface);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    gap: 1rem;
 }
 
-.thumb{
-    width: 100%;
-}
-
-.rowLabel{
-    flex: 2 1 0;
-    width: 15%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.sampleContainer{
-    flex: 1 1 0;
-    background-color: white;
+.rowLabel {
+    background: var(--primary);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    min-width: 120px;
     text-align: center;
-    border-radius: 10%;
-    margin: 5px;
-    overflow: hidden;
 }
 
-.blur{
+/* Compact Drawing Grid Layout */
+.drawings-grid {
+    display: flex;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.sampleContainer {
+    position: relative;
+    width: 100px;
+}
+
+.sampleLabel {
+    font-size: 0.75rem;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 0.25rem;
+    text-transform: capitalize;
+}
+
+.thumb {
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 0.25rem;
+    background: white;
+    padding: 0.25rem;
+    border: 1px solid var(--background);
+}
+
+/* Completion Indicator */
+.completion-indicator {
+    font-size: 0.75rem;
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding-right: 0.5rem;
+}
+
+.completion-indicator::before {
+    content: '✓';
+    font-weight: bold;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+/* Utility Classes */
+.blur {
     filter: blur(5px);
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .main-container {
+        grid-template-columns: 1fr;
+    }
+    
+    #chartContainer {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .drawings-grid {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .rowLabel {
+        width: 100%;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.row {
+    animation: fadeIn 0.3s ease-out forwards;
 }
