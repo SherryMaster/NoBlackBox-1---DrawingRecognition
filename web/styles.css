@@ -122,21 +122,6 @@ h1::after {
     border: 1px solid var(--background);
 }
 
-/* Completion Indicator */
-.completion-indicator {
-    font-size: 0.75rem;
-    color: var(--success);
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding-right: 0.5rem;
-}
-
-.completion-indicator::before {
-    content: '✓';
-    font-weight: bold;
-}
-
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
     width: 8px;

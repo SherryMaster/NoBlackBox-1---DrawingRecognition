@@ -31,11 +31,4 @@ function createRow(container, studentName, samples) {
         
         drawingsGrid.appendChild(sampleContainer);
     }
-
-    if(samples.length === 8) {
-        const completionIndicator = document.createElement("div");
-        completionIndicator.classList.add("completion-indicator");
-        completionIndicator.innerHTML = "Complete";
-        row.appendChild(completionIndicator);
-    }
 }
