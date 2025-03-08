@@ -1,4 +1,4 @@
-const constants={};
+const constants = {};
 
 constants.DATA_DIR = "../data";
 constants.RAW_DIR = constants.DATA_DIR + "/raw";
